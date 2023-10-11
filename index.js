@@ -1,35 +1,15 @@
-const app = require("./app")
-// const fs = require("fs") // one way to import file
-const gs = require("fs").writeFileSync
+const { MongoClient } = require("mongodb")
 
-let a = "90"
-// if (a===90) {
-//     console.log("matched");
-// }
-// else{
-//     console.log("not matched");
-// }
+const url = 'mongodb://localhost:27017'
+const client = new MongoClient(url)
+const dataBase = 'e-com'
 
-// for(i=1;i<=10;i++){
-//     console.log(i);
-// }
+async function getData() {
+    let result = await client.connect()
+    let db = result.db(dataBase)
+    let collection = db.collection('products')
+    let response = await collection.find({}).toArray()
+    console.log(response)
+}
 
-//filter
-// const arr = [2, 3, 4, 5, 6, 7, 8, 9]
-// const filterValue = arr.filter((item) => {
-//     return item % 2 === 0
-// })
-// console.log(filterValue);
-
-
-// get data from the different file
-// console.log(app.x); 
-// console.log(app.z());
-
-
-//global and non-global module
-console.log("global file")
-// fs.writeFileSync("hello.txt", "non global file") // one way to import
-gs("gs.txt", "second way to import file") // second way to import file
-
-console.log(__dirname); // directory name
+getData()
